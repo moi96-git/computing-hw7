@@ -1,56 +1,33 @@
 # Exercise 7: Python APIs
 
-This repository is intended to contain the final version of the assignment for Exercise 7: Python APIs.
+## Project context
 
-The final project includes a small machine learning API built with FastAPI, where a trained model is loaded from disk and used to generate predictions from input data sent to an endpoint.
+This repository is the solution to Assignment 7 - *Computing for Data Science*. 
+1. The data used was found on https://www.openml.org and its gathered from participanst in experimental speed dating.
+2. A machine learning model is trained once on this data and saved with `joblib`. 
+3. A FastAPI server loads the saved model and returns predictions. 
+4. A client script sends one example datapoint as JSON and prints the prediction it gets back.
 
-## What the repository contains
+## Model inputs 
+model_inputs.json
 
-- A trained machine learning model serialized with `joblib` (for example, a `.joblib` file)
-- A Python file that starts the API server and defines the prediction endpoint
-- A sample JSON file showing the format of the input features required by the model
-- A Python client script that sends an HTTP request to the API and prints the prediction
-- Optional model-training code used to generate the saved model
-- A minimal setup section describing dependencies and how to run the service locally
+They must be a rate between 0 and 10
 
-## Expected final structure
+    like: How much I liked my partner
+    attractive_partner: I rate my partner: attractiveness
+    funny_partner: I rate my partner: being funny
+    shared_interests_partner: I rate my partner: shared interests
+    guess_prob_liked: How likely I think my partner likes me
+    attractive_o: My partner rates me: attractiveness
+    funny_o: My partner rates me: being funny
 
-```text
-computing-hw7/
-├── README.md
-├── model.joblib
-├── api_app.py
-├── example_input.json
-├── request_model.py
-├── requirements.txt   # optional, if used
-└── train_model.py    # optional, if included for reproducibility
-```
 
-## Purpose of the project
+## Data
 
-The goal is to demonstrate how a trained machine learning model can be exposed through an API so that external programs can submit a feature vector or JSON payload and receive a prediction in return.
+`data/speeddating.arff` comes from speed dating experiments run at Columbia Business School between 2002 and 2004 (Fisman & Iyengar). Each participant had a four-minute "first date" with every participant of the opposite sex. They then said whether they wanted to see that person again and rated them on six attributes: attractiveness, sincerity, intelligence, fun, ambition and shared interests. The dataset also includes questionnaire answers on demographics, dating preferences, self-ratings and hobbies.
 
-The final version should allow the user to:
+- **Rows:** 8,378 dates, each seen from one participant about one partner
+- **Target:** `match`, which is 1 when both people said yes (about 16% of dates)
+- **Features used:** seven 1–10 ratings from the date night, from both sides of the date: `like`, `attractive_partner`, `funny_partner`, `shared_interests_partner`, `guess_prob_liked`, `attractive_o`, `funny_o`
 
-1. Train or load a machine learning model
-2. Run the API locally with Uvicorn
-3. Send a request to the server
-4. Receive a prediction from the model
-5. Handle common API-client issues such as connection errors or invalid input
-
-## Typical local run flow
-
-```bash
-uvicorn api_app:app --reload
-```
-
-Then run the client script in a second terminal:
-
-```bash
-python request_model.py
-```
-
-The API will usually be served at:
-
-```text
-http://localhost:8000
+Reference: Fisman, R., Iyengar, S., Kamenica, E. & Simonson, I. (2006). Gender Differences in Mate Selection: Evidence From a Speed Dating Experiment. *The Quarterly Journal of Economics*, 121(2), 673–697. https://doi.org/10.1162/qjec.2006.121.2.673
