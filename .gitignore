@@ -1,0 +1,6 @@
+.venv/
+.venv-1/
+__pycache__/
+.DS_Store
+practice_notebook.ipynb
+9- APIs Fundamentals.pdf
